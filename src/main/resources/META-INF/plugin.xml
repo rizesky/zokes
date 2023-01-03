@@ -1,0 +1,38 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>xyz.zes.zokes</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>Zokes</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="rizesky.slgn@gmail.com">XyzZes</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+    Zokes will generate english jokes for you on your notification. <br>
+    Various categories of jokes including pun, progammer, horror, etc.<br><br>
+    <em>You can  control how often jokes need to be delivered in settings.</em><br><br>
+    <small>This is just a for fun plugin, please don't take it seriously :)</em>
+  ]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup displayType="BALLOON" id="Zokes" key="xyz.zes.JokesNotif"/>
+        <postStartupActivity implementation="xyz.zes.zokes.Main"/>
+        <applicationConfigurable
+                id="xyz.zes.zokes.setting.ZokesSettingConfigurable"
+
+                instance="xyz.zes.zokes.setting.ZokesSettingConfigurable"/>
+        <applicationService serviceImplementation="xyz.zes.zokes.setting.ZokesSettingState"/>
+    </extensions>
+</idea-plugin>
