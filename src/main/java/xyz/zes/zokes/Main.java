@@ -28,7 +28,7 @@ public class Main implements StartupActivity {
     private static final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(30))
             .build();
-    private static final String jokeAPIURL = "https://v2.jokeapi.dev/joke/Any?lang=en";
+    private static final String jokeAPIURL = "https://v2.jokeapi.dev/joke/Any?lang=en&blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
 
     private static final ObjectMapper mapper =  new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
