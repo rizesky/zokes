@@ -34,6 +34,6 @@
 
                 instance="xyz.zes.zokes.setting.ZokesSettingConfigur able"/>
         <applicationService serviceImplementation="xyz.zes.zokes.setting.ZokesSettingState"/>
-        <applicationService serviceImplementation="xyz.zes.zokes.ActivityTracker" preload="true"/>
+        <applicationService serviceImplementation="xyz.zes.zokes.ActivityTracker"/>
     </extensions>
 </idea-plugin>
