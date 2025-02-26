@@ -22,7 +22,7 @@ Zokes delivers timely humor to brighten your coding sessions with various catego
 
 ### Manual Installation
 
-1. Download the latest release `.zip` file from the [releases page](https://github.com/xyzzes/zokes/releases)
+1. Download the latest release `.zip` file from the [releases page](https://github.com/rizesky/zokes/releases)
 2. In your IntelliJ IDE, go to **Settings/Preferences** → **Plugins**
 3. Click the gear icon and select **Install Plugin from Disk...**
 4. Navigate to the downloaded file and click **OK**
