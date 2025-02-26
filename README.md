@@ -98,7 +98,7 @@ This ensures jokes enhance your coding experience rather than disrupt your workf
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/xyzzes/zokes.git
+   git clone https://github.com/rizesky/zokes.git
    cd zokes
    ```
 
