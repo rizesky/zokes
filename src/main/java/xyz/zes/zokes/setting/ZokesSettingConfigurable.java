@@ -37,7 +37,12 @@ public class ZokesSettingConfigurable implements Configurable {
                 || !settingUIComp.getNotificationPosition().equals(settingState.notificationPosition)
                 || !settingUIComp.getJokeType().equals(settingState.jokeType)
                 || settingUIComp.getMatchThemeCheckbox() != settingState.matchIDETheme
-                || settingUIComp.getDisplayTime() != settingState.notificationDisplayTime;
+                || settingUIComp.getDisplayTime() != settingState.notificationDisplayTime
+                // Add smart timing checks
+                || settingUIComp.getSmartTimingCheckbox() != settingState.useSmartTiming
+                || settingUIComp.getFocusThreshold() != settingState.focusThresholdSeconds
+                || settingUIComp.getBreakThreshold() != settingState.breakThresholdSeconds
+                || settingUIComp.getPrioritizeBreaksCheckbox() != settingState.prioritizeBreaks;
     }
 
     @Override
@@ -68,6 +73,32 @@ public class ZokesSettingConfigurable implements Configurable {
             throw new ConfigurationException("Display time must be between " + MIN_DISPLAY_TIME + " and " + MAX_DISPLAY_TIME + " seconds");
         }
         settingState.notificationDisplayTime = newDisplayTime;
+
+
+        // Apply smart timing settings
+        settingState.useSmartTiming = settingUIComp.getSmartTimingCheckbox();
+
+        // Validate and apply focus threshold
+        int newFocusThreshold = settingUIComp.getFocusThreshold();
+        if (newFocusThreshold < 10) {
+            throw new ConfigurationException("Focus threshold must be at least 10 seconds");
+        }
+        if (newFocusThreshold > 600) {
+            throw new ConfigurationException("Focus threshold cannot exceed 600 seconds (10 minutes)");
+        }
+        settingState.focusThresholdSeconds = newFocusThreshold;
+
+        // Validate and apply break threshold
+        int newBreakThreshold = settingUIComp.getBreakThreshold();
+        if (newBreakThreshold < 10) {
+            throw new ConfigurationException("Break threshold must be at least 10 seconds");
+        }
+        if (newBreakThreshold > 300) {
+            throw new ConfigurationException("Break threshold cannot exceed 300 seconds (5 minutes)");
+        }
+        settingState.breakThresholdSeconds = newBreakThreshold;
+
+        settingState.prioritizeBreaks = settingUIComp.getPrioritizeBreaksCheckbox();
     }
 
     @Override

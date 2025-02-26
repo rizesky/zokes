@@ -35,6 +35,12 @@ public class ZokesSettingState implements PersistentStateComponent<ZokesSettingS
     // Joke type settings
     public String jokeType = "Any"; // Options: Any, single, twopart
 
+    // Smart timing settings
+    public boolean useSmartTiming = false; // Default to off
+    public int focusThresholdSeconds = 120; // 2 minutes of continuous typing = focused
+    public int breakThresholdSeconds = 60; // 1 minute of inactivity = break
+    public boolean prioritizeBreaks = true; // Show jokes during detected breaks
+
     public static ZokesSettingState getInstance(){
         return ApplicationManager.getApplication().getService(ZokesSettingState.class);
     }

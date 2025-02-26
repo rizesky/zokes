@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intellij.notification.Notification;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.stream.Collectors;
 
 import static xyz.zes.zokes.setting.Constant.TITLES;
 
@@ -38,9 +38,6 @@ public class Main implements StartupActivity {
     private static final String BASE_JOKE_API_URL = "https://v2.jokeapi.dev/joke/";
     private static final String JOKE_API_BASE_PARAMS = "?lang=en&blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
 
-    // Executor for background tasks
-    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    private volatile boolean isRunning = true;
 
     @Override
     public void runActivity(@NotNull Project project) {
@@ -55,8 +52,10 @@ public class Main implements StartupActivity {
      */
     private void runJokeLoop(Project project) {
         Notification[] previousNotification = {null};
+        ActivityTracker activityTracker = ApplicationManager.getApplication().getService(ActivityTracker.class);
 
-        while (isRunning) {
+
+        while (true) {
             ZokesSettingState settings = ZokesSettingState.getInstance();
 
             try {
@@ -66,8 +65,25 @@ public class Main implements StartupActivity {
                     continue;
                 }
 
-                // Fetch and display a joke
-                fetchAndDisplayJoke(project, settings, previousNotification);
+                boolean shouldShowJoke = true;
+
+                // Apply smart timing if enabled
+                if (settings.useSmartTiming) {
+                    // Check if user is in deep focus - if so, don't interrupt with jokes
+                    if (activityTracker.isUserFocused(settings.focusThresholdSeconds)) {
+                        shouldShowJoke = false;
+                    }
+                    // Check if user is taking a break - show joke only if prioritizing breaks
+                    else if (activityTracker.isUserTakingBreak(settings.breakThresholdSeconds)) {
+                        shouldShowJoke = settings.prioritizeBreaks || shouldShowJoke;
+                    }
+                    // Otherwise, follow normal interval timing
+                }
+
+                // Fetch and display a joke if appropriate
+                if (shouldShowJoke) {
+                    fetchAndDisplayJoke(project, settings, previousNotification);
+                }
 
                 // Wait for the specified interval
                 Thread.sleep(settings.intervalSeconds * 1000L);

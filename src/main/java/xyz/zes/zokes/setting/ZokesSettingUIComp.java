@@ -33,6 +33,12 @@ public class ZokesSettingUIComp {
     private final JBCheckBox matchThemeCheckbox = new JBCheckBox("🎨 Match IDE theme");
     private final JBTextField displayTimeTextField = new JBTextField();
 
+    // Smart timing components
+    private final JBCheckBox smartTimingCheckbox = new JBCheckBox("🧠 Use Smart Timing");
+    private final JBTextField focusThresholdTextField = new JBTextField();
+    private final JBTextField breakThresholdTextField = new JBTextField();
+    private final JBCheckBox prioritizeBreaksCheckbox = new JBCheckBox("☕ Prioritize showing jokes during breaks");
+
     public ZokesSettingUIComp() {
         ZokesSettingState settingState = ZokesSettingState.getInstance();
         intervalTextField.setText(String.valueOf(settingState.intervalSeconds));
@@ -102,6 +108,11 @@ public class ZokesSettingUIComp {
         appearancePanel.add(matchThemeCheckbox);
         appearancePanel.add(new JPanel()); // Empty panel for grid layout
 
+
+
+
+
+
         // Input validation for numeric fields
         intervalTextField.addKeyListener(new KeyAdapter() {
             @Override
@@ -121,8 +132,48 @@ public class ZokesSettingUIComp {
             }
         });
 
+        // Initialize smart timing components
+        smartTimingCheckbox.setSelected(settingState.useSmartTiming);
+        focusThresholdTextField.setText(String.valueOf(settingState.focusThresholdSeconds));
+        breakThresholdTextField.setText(String.valueOf(settingState.breakThresholdSeconds));
+        prioritizeBreaksCheckbox.setSelected(settingState.prioritizeBreaks);
+
+        // Add numeric validation to threshold fields
+        focusThresholdTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                focusThresholdTextField.setEditable(e.getKeyChar() >= '0' && e.getKeyChar() <= '9'
+                        || e.getKeyCode() == KeyEvent.VK_BACK_SPACE
+                        || e.getKeyCode() == KeyEvent.VK_DELETE);
+            }
+        });
+
+        breakThresholdTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                breakThresholdTextField.setEditable(e.getKeyChar() >= '0' && e.getKeyChar() <= '9'
+                        || e.getKeyCode() == KeyEvent.VK_BACK_SPACE
+                        || e.getKeyCode() == KeyEvent.VK_DELETE);
+            }
+        });
+
+        // Create smart timing panel
+        JPanel smartTimingPanel = new JPanel();
+        smartTimingPanel.setLayout(new GridLayout(0, 2));
+        smartTimingPanel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(), "🧠 Smart Timing", TitledBorder.LEFT, TitledBorder.TOP));
+
+        smartTimingPanel.add(smartTimingCheckbox);
+        smartTimingPanel.add(new JPanel()); // Empty panel for grid layout
+        smartTimingPanel.add(new JBLabel("⌨️ Focus threshold (seconds):"));
+        smartTimingPanel.add(focusThresholdTextField);
+        smartTimingPanel.add(new JBLabel("☕ Break threshold (seconds):"));
+        smartTimingPanel.add(breakThresholdTextField);
+        smartTimingPanel.add(prioritizeBreaksCheckbox);
+        smartTimingPanel.add(new JPanel()); // Empty panel for grid layout
+
         // Create fun title label
-        JBLabel titleLabel = new JBLabel("🎯 Zokes - Your Joke Break Companion");
+        JBLabel titleLabel = new JBLabel("Zokes - Your Joke Break Companion");
         titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 14));
 
         myMainPanel = FormBuilder.createFormBuilder()
@@ -132,6 +183,7 @@ public class ZokesSettingUIComp {
                 .addComponent(genJokeStatusCheckbox, 1)
                 .addComponent(categoriesPanel, 1)
                 .addComponent(jokeStylePanel, 1)
+                .addComponent(smartTimingPanel, 1)
                 .addComponent(appearancePanel, 1)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
@@ -157,16 +209,8 @@ public class ZokesSettingUIComp {
         return Integer.valueOf(intervalTextField.getText());
     }
 
-    public void setIntervalTextField(@NotNull String newText) {
-        intervalTextField.setText(newText);
-    }
-
     public boolean getGenJokeStatusCheckbox() {
         return genJokeStatusCheckbox.isSelected();
-    }
-
-    public void setJokeStatusCheckbox(boolean newStatus) {
-        genJokeStatusCheckbox.setSelected(newStatus);
     }
 
     public Set<String> getEnabledCategories() {
@@ -220,5 +264,29 @@ public class ZokesSettingUIComp {
         } catch (NumberFormatException e) {
             return Constant.MIN_DISPLAY_TIME; // Default value
         }
+    }
+
+    public boolean getSmartTimingCheckbox() {
+        return smartTimingCheckbox.isSelected();
+    }
+
+    public int getFocusThreshold() {
+        try {
+            return Integer.parseInt(focusThresholdTextField.getText());
+        } catch (NumberFormatException e) {
+            return 120; // Default to 2 minutes
+        }
+    }
+
+    public int getBreakThreshold() {
+        try {
+            return Integer.parseInt(breakThresholdTextField.getText());
+        } catch (NumberFormatException e) {
+            return 60; // Default to 1 minute
+        }
+    }
+
+    public boolean getPrioritizeBreaksCheckbox() {
+        return prioritizeBreaksCheckbox.isSelected();
     }
 }
