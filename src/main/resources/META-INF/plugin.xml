@@ -32,7 +32,7 @@
         <applicationConfigurable
                 id="xyz.zes.zokes.setting.ZokesSettingConfigurable"
 
-                instance="xyz.zes.zokes.setting.ZokesSettingConfigur able"/>
+                instance="xyz.zes.zokes.setting.ZokesSettingConfigurable"/>
         <applicationService serviceImplementation="xyz.zes.zokes.setting.ZokesSettingState"/>
         <applicationService serviceImplementation="xyz.zes.zokes.ActivityTracker"/>
     </extensions>
