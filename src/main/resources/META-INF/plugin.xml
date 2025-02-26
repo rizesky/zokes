@@ -15,7 +15,7 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
     Zokes will generate english jokes for you on your notification. <br>
-    Various categories of jokes including pun, progammer, horror, etc.<br><br>
+    Various categories of jokes including pun, programmer, horror, etc.<br><br>
     <em>You can  control how often jokes need to be delivered in settings.</em><br><br>
     <small>This is just a for fun plugin, please don't take it seriously :)</em>
   ]]></description>
@@ -32,7 +32,7 @@
         <applicationConfigurable
                 id="xyz.zes.zokes.setting.ZokesSettingConfigurable"
 
-                instance="xyz.zes.zokes.setting.ZokesSettingConfigurable"/>
+                instance="xyz.zes.zokes.setting.ZokesSettingConfigur able"/>
         <applicationService serviceImplementation="xyz.zes.zokes.setting.ZokesSettingState"/>
         <applicationService serviceImplementation="xyz.zes.zokes.ActivityTracker" preload="true"/>
     </extensions>
