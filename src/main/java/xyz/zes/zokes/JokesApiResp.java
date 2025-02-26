@@ -4,8 +4,20 @@ import java.util.Map;
 
 public class JokesApiResp {
     private boolean error;
+    private String category;
+    private String type;
 
+    // Fields for twopart jokes
+    private String setup;
+    private String delivery;
 
+    // Field for single jokes
+    private String joke;
+
+    private Map<String,Boolean> flags;
+    private Integer id;
+    private boolean safe;
+    private String lang;
 
     public boolean isError() {
         return error;
@@ -39,6 +51,22 @@ public class JokesApiResp {
         this.delivery = delivery;
     }
 
+    public String getJoke() {
+        return joke;
+    }
+
+    public void setJoke(String joke) {
+        this.joke = joke;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Map<String, Boolean> getFlags() {
         return flags;
     }
@@ -70,19 +98,4 @@ public class JokesApiResp {
     public void setLang(String lang) {
         this.lang = lang;
     }
-
-    private String category;
-
-    private String setup;
-
-
-    private String delivery;
-
-    private Map<String,Boolean> flags;
-
-    private Integer id;
-
-    private boolean safe;
-
-    private String lang;
 }
